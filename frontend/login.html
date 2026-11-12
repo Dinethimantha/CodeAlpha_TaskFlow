@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | TaskFlow</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a, #312e81, #6366f1);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-wrapper {
+            width: 100%;
+            max-width: 430px;
+        }
+
+        .login-card {
+            background: white;
+            padding: 38px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .brand-icon {
+            width: 55px;
+            height: 55px;
+            background: #6366f1;
+            color: white;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 27px;
+            margin: 0 auto 18px;
+        }
+
+        .form-control {
+            padding: 12px 14px;
+            border-radius: 9px;
+        }
+
+        .form-control:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 13px;
+            background: #6366f1;
+            border: none;
+            color: white;
+            border-radius: 9px;
+            font-weight: 600;
+        }
+
+        .login-btn:hover {
+            background: #4f46e5;
+        }
+
+        .login-link {
+            color: #6366f1;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-wrapper">
+        <div class="login-card">
+
+            <div class="text-center mb-4">
+                <div class="brand-icon">
+                    <i class="bi bi-kanban-fill"></i>
+                </div>
+
+                <h3 class="fw-bold">Welcome Back</h3>
+                <p class="text-secondary">Sign in to continue to TaskFlow</p>
+            </div>
+
+            <form id="loginForm">
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Email Address</label>
+                    <input
+                        type="email"
+                        id="email"
+                        class="form-control"
+                        placeholder="Enter your email"
+                        required
+                    >
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        class="form-control"
+                        placeholder="Enter your password"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="login-btn" id="loginButton">
+                    Sign In
+                </button>
+
+            </form>
+
+            <p class="text-center mt-4 mb-0 text-secondary">
+                Don't have an account?
+                <a href="register.html" class="login-link">Create Account</a>
+            </p>
+
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+
+</body>
+</html>

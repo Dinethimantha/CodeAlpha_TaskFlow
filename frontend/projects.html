@@ -1,0 +1,283 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Projects | TaskFlow</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .projects-page {
+            padding: 30px;
+        }
+
+        .project-card {
+            background: var(--surface, #ffffff);
+            border: 1px solid var(--border, #e2e8f0);
+            border-radius: 14px;
+            padding: 22px;
+            height: 100%;
+            transition: 0.2s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.07);
+        }
+
+        .project-card-color {
+            width: 42px;
+            height: 42px;
+            border-radius: 11px;
+            margin-bottom: 18px;
+        }
+
+        .project-card h5 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text, #1e293b);
+        }
+
+        .project-card p {
+            color: var(--muted, #64748b);
+            font-size: 13px;
+            min-height: 40px;
+            overflow-wrap: anywhere;
+        }
+
+        .project-meta {
+            border-top: 1px solid var(--border, #e2e8f0);
+            padding-top: 14px;
+            margin-top: 16px;
+            font-size: 12px;
+            color: var(--muted, #64748b);
+        }
+
+        .page-title {
+            font-weight: 750;
+            color: var(--text, #1e293b);
+        }
+
+        .project-search .form-control,
+        .project-search .input-group-text,
+        .project-search .form-select {
+            min-height: 45px;
+            border-color: var(--border, #e2e8f0);
+        }
+
+        .project-search .input-group-text {
+            color: #64748b;
+        }
+
+        .project-search .form-control:focus,
+        .project-search .form-select:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+        }
+
+        .project-empty {
+            background: var(--surface, #ffffff);
+            border: 1px dashed var(--border, #e2e8f0);
+            border-radius: 14px;
+            padding: 55px 20px;
+            text-align: center;
+            color: var(--muted, #64748b);
+        }
+
+        .project-empty i {
+            font-size: 40px;
+        }
+
+        .project-empty h5 {
+            color: var(--text, #1e293b);
+            margin-top: 15px;
+        }
+
+        @media (max-width: 576px) {
+            .projects-page {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+
+        <aside class="sidebar" id="sidebar">
+
+            <div class="sidebar-brand">
+                <div class="brand-logo">
+                    <i class="bi bi-kanban-fill"></i>
+                </div>
+                <span>TaskFlow</span>
+            </div>
+
+            <div class="sidebar-section">
+                <p class="sidebar-label">WORKSPACE</p>
+
+                <a href="index.html" class="sidebar-link">
+                    <i class="bi bi-grid"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="projects.html" class="sidebar-link active">
+                    <i class="bi bi-folder2"></i>
+                    <span>My Projects</span>
+                </a>
+
+                <a href="tasks.html" class="sidebar-link">
+                    <i class="bi bi-check2-square"></i>
+                    <span>My Tasks</span>
+                </a>
+
+               <a href="kanban.html" class="sidebar-link">
+    <i class="bi bi-kanban"></i>
+    <span>Kanban Board</span>
+</a>
+            </div>
+
+            <div class="sidebar-section">
+                <p class="sidebar-label">GENERAL</p>
+
+               <a href="notifications.html" class="sidebar-link">
+    <i class="bi bi-bell"></i>
+    <span>Notifications</span>
+    <span class="notification-count" id="notificationCount">0</span>
+</a>
+<a href="team-members.html" class="sidebar-link">
+    <i class="bi bi-people"></i>
+    <span>Team Members</span>
+</a>
+
+                <a href="settings.html" class="sidebar-link">
+    <i class="bi bi-gear"></i>
+    <span>Settings</span>
+</a>
+            </div>
+
+            <div class="sidebar-bottom">
+                <div class="sidebar-user">
+
+                    <div class="user-avatar" id="sidebarAvatar">U</div>
+
+                    <div class="user-info">
+                        <h6 id="sidebarUserName">User Name</h6>
+                        <p>Workspace Member</p>
+                    </div>
+
+                    <button id="logoutButton" class="logout-btn" title="Logout">
+                        <i class="bi bi-box-arrow-right"></i>
+                    </button>
+
+                </div>
+            </div>
+
+        </aside>
+
+        <main class="main-content">
+
+            <header class="topbar">
+
+                <div class="topbar-left">
+
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="bi bi-list"></i>
+                    </button>
+
+                    <div>
+                        <h5>My Projects</h5>
+                        <p>Manage all your workspace projects</p>
+                    </div>
+
+                </div>
+
+                <div class="topbar-right">
+
+                    <button class="icon-btn" id="themeToggle" title="Toggle Theme">
+                        <i class="bi bi-moon"></i>
+                    </button>
+
+                    <div class="topbar-avatar" id="topbarAvatar">U</div>
+
+                </div>
+
+            </header>
+
+            <section class="projects-page">
+
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+
+                    <div>
+                        <h2 class="page-title">My Projects</h2>
+                        <p class="text-secondary mb-0">
+                            View and manage all your workspace projects.
+                        </p>
+                    </div>
+
+                    <a href="index.html" class="btn btn-primary">
+                        <i class="bi bi-plus-lg"></i> Create Project
+                    </a>
+
+                </div>
+
+                <div class="row g-3 mb-4 project-search">
+
+                    <div class="col-12 col-md-7">
+
+                        <div class="input-group">
+
+                            <span class="input-group-text bg-white">
+                                <i class="bi bi-search"></i>
+                            </span>
+
+                            <input
+                                type="text"
+                                id="projectSearch"
+                                class="form-control"
+                                placeholder="Search projects by name..."
+                            >
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-12 col-md-5">
+
+                        <select id="projectStatusFilter" class="form-select">
+                            <option value="all">All Projects</option>
+                            <option value="active">Active</option>
+                            <option value="completed">Completed</option>
+                            <option value="archived">Archived</option>
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <div class="row g-4" id="projectsContainer">
+
+                    <div class="col-12 text-center py-5">
+                        <div class="spinner-border text-primary"></div>
+                        <p class="text-secondary mt-3">Loading projects...</p>
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/projects.js"></script>
+
+</body>
+</html>

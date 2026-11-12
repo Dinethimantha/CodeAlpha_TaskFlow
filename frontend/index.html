@@ -1,0 +1,283 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | TaskFlow</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+
+        <aside class="sidebar" id="sidebar">
+
+            <div class="sidebar-brand">
+                <div class="brand-logo">
+                    <i class="bi bi-kanban-fill"></i>
+                </div>
+                <span>TaskFlow</span>
+            </div>
+
+            <div class="sidebar-section">
+                <p class="sidebar-label">WORKSPACE</p>
+
+                <a href="index.html" class="sidebar-link active">
+                    <i class="bi bi-grid"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="projects.html" class="sidebar-link">
+                    <i class="bi bi-folder2"></i>
+                    <span>My Projects</span>
+                </a>
+
+             <a href="tasks.html" class="sidebar-link">
+    <i class="bi bi-check2-square"></i>
+    <span>My Tasks</span>
+</a>
+
+                <a href="kanban.html" class="sidebar-link">
+    <i class="bi bi-kanban"></i>
+    <span>Kanban Board</span>
+</a>
+            </div>
+
+            <div class="sidebar-section">
+                <p class="sidebar-label">GENERAL</p>
+
+                <a href="notifications.html" class="sidebar-link">
+    <i class="bi bi-bell"></i>
+    <span>Notifications</span>
+    <span class="notification-count" id="notificationCount">0</span>
+</a>
+
+                <a href="team-members.html" class="sidebar-link">
+    <i class="bi bi-people"></i>
+    <span>Team Members</span>
+</a>
+
+                <a href="settings.html" class="sidebar-link">
+    <i class="bi bi-gear"></i>
+    <span>Settings</span>
+</a>
+            </div>
+
+            <div class="sidebar-bottom">
+                <div class="sidebar-user">
+                    <div class="user-avatar" id="sidebarAvatar">U</div>
+
+                    <div class="user-info">
+                        <h6 id="sidebarUserName">User Name</h6>
+                        <p>Workspace Member</p>
+                    </div>
+
+                    <button id="logoutButton" class="logout-btn" title="Logout">
+                        <i class="bi bi-box-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+        </aside>
+
+        <main class="main-content">
+
+            <header class="topbar">
+
+                <div class="topbar-left">
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="bi bi-list"></i>
+                    </button>
+
+                    <div>
+                        <h5>Dashboard</h5>
+                        <p>Manage your work and track progress</p>
+                    </div>
+                </div>
+
+                <div class="topbar-right">
+                    <button class="icon-btn" id="themeToggle" title="Toggle Theme">
+                        <i class="bi bi-moon"></i>
+                    </button>
+
+                    <button class="icon-btn notification-btn" title="Notifications">
+                        <i class="bi bi-bell"></i>
+                        <span></span>
+                    </button>
+
+                    <div class="topbar-avatar" id="topbarAvatar">U</div>
+                </div>
+
+            </header>
+
+            <section class="dashboard-content">
+
+                <div class="welcome-section">
+                    <div>
+                        <h2>Welcome back, <span id="welcomeUserName">User</span>!</h2>
+                        <p>Here's what's happening with your projects today.</p>
+                    </div>
+
+                    <button class="primary-btn" id="createProjectButton">
+                        <i class="bi bi-plus-lg me-2"></i>
+                        Create Project
+                    </button>
+                </div>
+
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+                        <div class="stat-icon purple">
+                            <i class="bi bi-folder2-open"></i>
+                        </div>
+                        <div>
+                            <p>Total Projects</p>
+                            <h3 id="totalProjects">0</h3>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <i class="bi bi-list-task"></i>
+                        </div>
+                        <div>
+                            <p>Total Tasks</p>
+                            <h3 id="totalTasks">0</h3>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon orange">
+                            <i class="bi bi-clock-history"></i>
+                        </div>
+                        <div>
+                            <p>In Progress</p>
+                            <h3 id="inProgressTasks">0</h3>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <i class="bi bi-check-circle"></i>
+                        </div>
+                        <div>
+                            <p>Completed Tasks</p>
+                            <h3 id="completedTasks">0</h3>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="dashboard-grid">
+
+                    <section class="content-card">
+                        <div class="section-heading">
+                            <div>
+                                <h5>My Projects</h5>
+                                <p>Your active workspace projects</p>
+                            </div>
+
+                            <a href="projects.html" class="view-link">View All</a>
+                        </div>
+
+                        <div id="projectsContainer" class="projects-container">
+                            <div class="empty-state">
+                                <i class="bi bi-folder2-open"></i>
+                                <h6>No projects yet</h6>
+                                <p>Create your first project to get started.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="content-card">
+                        <div class="section-heading">
+                            <div>
+                                <h5>Recent Tasks</h5>
+                                <p>Your latest task activities</p>
+                            </div>
+
+                            <a href="#" class="view-link">View All</a>
+                        </div>
+
+                        <div id="recentTasksContainer">
+                            <div class="empty-state">
+                                <i class="bi bi-check2-square"></i>
+                                <h6>No tasks available</h6>
+                                <p>Your recent tasks will appear here.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <div class="modal fade" id="createProjectModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Create New Project</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <form id="createProjectForm">
+
+                    <div class="modal-body">
+
+                        <div class="mb-3">
+                            <label for="projectName" class="form-label">Project Name</label>
+                            <input type="text" class="form-control" id="projectName"
+                                placeholder="Enter project name" required maxlength="100">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="projectDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="projectDescription"
+                                rows="3" placeholder="Describe your project"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="projectColor" class="form-label">Project Color</label>
+                            <input type="color" class="form-control form-control-color"
+                                id="projectColor" value="#6366f1">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="projectDueDate" class="form-label">Due Date</label>
+                            <input type="date" class="form-control" id="projectDueDate">
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+
+                        <button type="submit" class="btn btn-primary" id="saveProjectButton">
+                            Create Project
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,437 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Tasks | TaskFlow</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .tasks-page {
+            padding: 28px;
+        }
+
+        .tasks-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .tasks-header h2 {
+            font-size: 25px;
+            font-weight: 750;
+            margin-bottom: 6px;
+        }
+
+        .tasks-header p {
+            color: var(--muted);
+            margin: 0;
+            font-size: 13px;
+        }
+
+        .task-filter-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 22px;
+        }
+
+        .task-filter-card .form-control,
+        .task-filter-card .form-select {
+            min-height: 43px;
+            border-color: var(--border);
+            font-size: 13px;
+        }
+
+        .task-list-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 22px;
+        }
+
+        .task-list-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .task-list-heading h5 {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .task-count {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .my-task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding: 17px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .my-task-item:last-child {
+            border-bottom: none;
+        }
+
+        .my-task-main {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .my-task-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 11px;
+            background: #eef2ff;
+            color: #6366f1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+            flex-shrink: 0;
+        }
+
+        .my-task-info {
+            min-width: 0;
+        }
+
+        .my-task-info h6 {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            overflow-wrap: anywhere;
+        }
+
+        .my-task-info p {
+            color: var(--muted);
+            font-size: 11px;
+            margin: 0;
+            overflow-wrap: anywhere;
+        }
+
+        .my-task-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .task-priority,
+        .task-due-date {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 6px 9px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        .priority-low {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .priority-medium {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .priority-high {
+            background: #ffedd5;
+            color: #c2410c;
+        }
+
+        .priority-urgent {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .task-due-date {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .tasks-empty {
+            text-align: center;
+            padding: 55px 15px;
+            color: var(--muted);
+        }
+
+        .tasks-empty i {
+            font-size: 42px;
+            display: block;
+            margin-bottom: 13px;
+        }
+
+        .tasks-empty h5 {
+            color: var(--text);
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .tasks-page {
+                padding: 18px;
+            }
+
+            .my-task-item {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .my-task-meta {
+                justify-content: flex-start;
+                padding-left: 55px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tasks-page {
+                padding: 13px;
+            }
+
+            .task-list-card,
+            .task-filter-card {
+                padding: 15px;
+            }
+
+            .tasks-header h2 {
+                font-size: 21px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+
+        <aside class="sidebar" id="sidebar">
+
+            <div class="sidebar-brand">
+                <div class="brand-logo">
+                    <i class="bi bi-kanban-fill"></i>
+                </div>
+                <span>TaskFlow</span>
+            </div>
+
+            <div class="sidebar-section">
+                <p class="sidebar-label">WORKSPACE</p>
+
+                <a href="index.html" class="sidebar-link">
+                    <i class="bi bi-grid"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="projects.html" class="sidebar-link">
+                    <i class="bi bi-folder2"></i>
+                    <span>My Projects</span>
+                </a>
+
+                <a href="tasks.html" class="sidebar-link active">
+                    <i class="bi bi-check2-square"></i>
+                    <span>My Tasks</span>
+                </a>
+
+                <a href="kanban.html" class="sidebar-link">
+    <i class="bi bi-kanban"></i>
+    <span>Kanban Board</span>
+</a>
+            </div>
+
+            <div class="sidebar-section">
+                <p class="sidebar-label">GENERAL</p>
+
+               <a href="notifications.html" class="sidebar-link">
+    <i class="bi bi-bell"></i>
+    <span>Notifications</span>
+    <span class="notification-count" id="notificationCount">0</span>
+</a>
+
+                <a href="team-members.html" class="sidebar-link">
+    <i class="bi bi-people"></i>
+    <span>Team Members</span>
+</a>
+
+                <a href="settings.html" class="sidebar-link">
+    <i class="bi bi-gear"></i>
+    <span>Settings</span>
+</a>
+            </div>
+
+            <div class="sidebar-bottom">
+                <div class="sidebar-user">
+
+                    <div class="user-avatar" id="sidebarAvatar">U</div>
+
+                    <div class="user-info">
+                        <h6 id="sidebarUserName">User Name</h6>
+                        <p>Workspace Member</p>
+                    </div>
+
+                    <button id="logoutButton" class="logout-btn" title="Logout">
+                        <i class="bi bi-box-arrow-right"></i>
+                    </button>
+
+                </div>
+            </div>
+
+        </aside>
+
+        <main class="main-content">
+
+            <header class="topbar">
+
+                <div class="topbar-left">
+
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="bi bi-list"></i>
+                    </button>
+
+                    <div>
+                        <h5>My Tasks</h5>
+                        <p>Manage your assigned tasks</p>
+                    </div>
+
+                </div>
+
+                <div class="topbar-right">
+
+                    <button class="icon-btn" id="themeToggle" title="Toggle Theme">
+                        <i class="bi bi-moon"></i>
+                    </button>
+
+                    <button class="icon-btn notification-btn" title="Notifications">
+                        <i class="bi bi-bell"></i>
+                        <span></span>
+                    </button>
+
+                    <div class="topbar-avatar" id="topbarAvatar">U</div>
+
+                </div>
+
+            </header>
+
+            <section class="tasks-page">
+
+                <div class="tasks-header">
+                    <div>
+                        <h2>My Tasks</h2>
+                        <p>View and manage all tasks assigned to you.</p>
+                    </div>
+                </div>
+
+                <div class="task-filter-card">
+
+                    <div class="row g-3">
+
+                        <div class="col-12 col-md-6">
+
+                            <label for="taskSearch" class="form-label fw-semibold small">
+                                Search Tasks
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text bg-white">
+                                    <i class="bi bi-search"></i>
+                                </span>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="taskSearch"
+                                    placeholder="Search by task name..."
+                                >
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-12 col-md-3">
+
+                            <label for="taskStatusFilter" class="form-label fw-semibold small">
+                                Status
+                            </label>
+
+                            <select class="form-select" id="taskStatusFilter">
+                                <option value="all">All Statuses</option>
+                                <option value="todo">To Do</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="in-review">In Review</option>
+                                <option value="completed">Completed</option>
+                            </select>
+
+                        </div>
+
+                        <div class="col-12 col-md-3">
+
+                            <label for="taskPriorityFilter" class="form-label fw-semibold small">
+                                Priority
+                            </label>
+
+                            <select class="form-select" id="taskPriorityFilter">
+                                <option value="all">All Priorities</option>
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                                <option value="urgent">Urgent</option>
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="task-list-card">
+
+                    <div class="task-list-heading">
+                        <h5>Assigned Tasks</h5>
+                        <span class="task-count" id="taskCount">Loading...</span>
+                    </div>
+
+                    <div id="tasksContainer">
+
+                        <div class="tasks-empty">
+                            <i class="bi bi-arrow-repeat"></i>
+                            <h5>Loading Tasks</h5>
+                            <p>Please wait...</p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/tasks.js"></script>
+
+</body>
+</html>

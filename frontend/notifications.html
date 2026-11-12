@@ -1,0 +1,356 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications | TaskFlow</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .notifications-page {
+            padding: 30px;
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .notification-list {
+            background: var(--surface, #fff);
+            border: 1px solid var(--border, #e2e8f0);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .notification-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 19px 22px;
+            border-bottom: 1px solid var(--border, #e2e8f0);
+            transition: background 0.2s;
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .notification-item.unread {
+            background: rgba(99, 102, 241, 0.06);
+        }
+
+        .notification-icon {
+            width: 42px;
+            height: 42px;
+            min-width: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .notification-icon.task {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .notification-icon.comment {
+            background: #fce7f3;
+            color: #db2777;
+        }
+
+        .notification-icon.project {
+            background: #ede9fe;
+            color: #7c3aed;
+        }
+
+        .notification-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .notification-content h6 {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text, #1e293b);
+            margin-bottom: 6px;
+            overflow-wrap: anywhere;
+        }
+
+        .notification-content p {
+            font-size: 11px;
+            color: var(--muted, #64748b);
+            margin-bottom: 7px;
+        }
+
+        .notification-time {
+            font-size: 10px;
+            color: var(--muted, #94a3b8);
+        }
+
+        .notification-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .unread-dot {
+            width: 9px;
+            height: 9px;
+            background: #6366f1;
+            border-radius: 50%;
+            margin-top: 5px;
+        }
+
+        .mark-read-btn {
+            border: none;
+            background: transparent;
+            color: #6366f1;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .mark-read-btn:hover {
+            color: #4338ca;
+        }
+
+        .notification-empty {
+            text-align: center;
+            padding: 65px 20px;
+            color: var(--muted, #64748b);
+        }
+
+        .notification-empty i {
+            font-size: 42px;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .notification-filter {
+            max-width: 180px;
+        }
+
+        .notification-count-badge {
+            background: #eef2ff;
+            color: #4f46e5;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        body.dark-theme .notification-list {
+            background: #1e293b;
+            border-color: #334155;
+        }
+
+        body.dark-theme .notification-item {
+            border-color: #334155;
+        }
+
+        body.dark-theme .notification-item.unread {
+            background: rgba(99, 102, 241, 0.13);
+        }
+
+        body.dark-theme .notification-content h6 {
+            color: #f1f5f9;
+        }
+
+        body.dark-theme .notification-icon.task {
+            background: #1e3a8a;
+            color: #bfdbfe;
+        }
+
+        body.dark-theme .notification-icon.comment {
+            background: #831843;
+            color: #fbcfe8;
+        }
+
+        body.dark-theme .notification-icon.project {
+            background: #4c1d95;
+            color: #ddd6fe;
+        }
+
+        @media (max-width: 576px) {
+            .notifications-page {
+                padding: 20px 15px;
+            }
+
+            .notification-item {
+                padding: 15px;
+                gap: 10px;
+            }
+
+            .notification-icon {
+                width: 36px;
+                height: 36px;
+                min-width: 36px;
+                font-size: 15px;
+            }
+
+            .notification-actions {
+                flex-direction: column;
+                align-items: flex-end;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+
+        <aside class="sidebar" id="sidebar">
+
+            <div class="sidebar-brand">
+                <div class="brand-logo">
+                    <i class="bi bi-kanban-fill"></i>
+                </div>
+                <span>TaskFlow</span>
+            </div>
+
+            <div class="sidebar-section">
+                <p class="sidebar-label">WORKSPACE</p>
+
+                <a href="index.html" class="sidebar-link">
+                    <i class="bi bi-grid"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="projects.html" class="sidebar-link">
+                    <i class="bi bi-folder2"></i>
+                    <span>My Projects</span>
+                </a>
+
+                <a href="tasks.html" class="sidebar-link">
+                    <i class="bi bi-check2-square"></i>
+                    <span>My Tasks</span>
+                </a>
+
+                <a href="kanban.html" class="sidebar-link">
+                    <i class="bi bi-kanban"></i>
+                    <span>Kanban Board</span>
+                </a>
+            </div>
+
+            <div class="sidebar-section">
+                <p class="sidebar-label">GENERAL</p>
+
+                <a href="notifications.html" class="sidebar-link active">
+                    <i class="bi bi-bell"></i>
+                    <span>Notifications</span>
+                    <span class="notification-count" id="notificationCount">0</span>
+                </a>
+
+                <a href="team-members.html" class="sidebar-link">
+    <i class="bi bi-people"></i>
+    <span>Team Members</span>
+</a>
+
+                <a href="settings.html" class="sidebar-link">
+    <i class="bi bi-gear"></i>
+    <span>Settings</span>
+</a>
+            </div>
+
+            <div class="sidebar-bottom">
+                <div class="sidebar-user">
+                    <div class="user-avatar" id="sidebarAvatar">U</div>
+
+                    <div class="user-info">
+                        <h6 id="sidebarUserName">User Name</h6>
+                        <p>Workspace Member</p>
+                    </div>
+
+                    <button id="logoutButton" class="logout-btn" title="Logout">
+                        <i class="bi bi-box-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+        </aside>
+
+        <main class="main-content">
+
+            <header class="topbar">
+
+                <div class="topbar-left">
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="bi bi-list"></i>
+                    </button>
+
+                    <div>
+                        <h5>Notifications</h5>
+                        <p>Stay updated with your workspace</p>
+                    </div>
+                </div>
+
+                <div class="topbar-right">
+                    <button class="icon-btn" id="themeToggle" title="Toggle Theme">
+                        <i class="bi bi-moon"></i>
+                    </button>
+
+                    <div class="topbar-avatar" id="topbarAvatar">U</div>
+                </div>
+
+            </header>
+
+            <section class="notifications-page">
+
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+
+                    <div>
+                        <h2 class="page-title">All Notifications</h2>
+                        <p class="text-secondary mb-0">
+                            Your latest activities and updates
+                        </p>
+                    </div>
+
+                    <button class="btn btn-primary" id="markAllReadButton">
+                        <i class="bi bi-check2-all me-2"></i>
+                        Mark All as Read
+                    </button>
+
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-3">
+
+                    <div>
+                        <span class="notification-count-badge" id="totalNotifications">
+                            0 Notifications
+                        </span>
+                    </div>
+
+                    <select class="form-select notification-filter" id="notificationFilter">
+                        <option value="all">All Notifications</option>
+                        <option value="unread">Unread</option>
+                        <option value="read">Read</option>
+                    </select>
+
+                </div>
+
+                <div class="notification-list" id="notificationList">
+
+                    <div class="notification-empty">
+                        <i class="bi bi-bell"></i>
+                        Loading notifications...
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/notifications.js"></script>
+
+</body>
+</html>

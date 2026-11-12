@@ -1,0 +1,396 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanban Board | TaskFlow</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .kanban-page {
+            padding: 30px;
+        }
+
+        .kanban-board {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(250px, 1fr));
+            gap: 18px;
+            align-items: start;
+            overflow-x: auto;
+            padding-bottom: 15px;
+        }
+
+        .kanban-column {
+            background: #f1f5f9;
+            border-radius: 14px;
+            padding: 15px;
+            min-height: 400px;
+        }
+
+        .kanban-column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .kanban-column-header h6 {
+            font-size: 13px;
+            font-weight: 700;
+            margin: 0;
+            color: #1e293b;
+        }
+
+        .kanban-count {
+            background: #e2e8f0;
+            color: #475569;
+            padding: 4px 9px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .kanban-tasks {
+            min-height: 330px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .kanban-tasks.drag-over {
+            background: rgba(99, 102, 241, 0.08);
+            border: 2px dashed #6366f1;
+            border-radius: 10px;
+        }
+
+        .kanban-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 11px;
+            padding: 15px;
+            cursor: grab;
+            transition: 0.2s;
+        }
+
+        .kanban-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(15, 23, 42, 0.07);
+        }
+
+        .kanban-card:active {
+            cursor: grabbing;
+        }
+
+        .kanban-card h6 {
+            font-size: 13px;
+            font-weight: 700;
+            color: #1e293b;
+            overflow-wrap: anywhere;
+        }
+
+        .kanban-card p {
+            font-size: 11px;
+            color: #64748b;
+            overflow-wrap: anywhere;
+        }
+
+        .kanban-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .kanban-priority {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: capitalize;
+            padding: 5px 8px;
+            border-radius: 20px;
+        }
+
+        .priority-low {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .priority-medium {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .priority-high {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .priority-urgent {
+            background: #7f1d1d;
+            color: #ffffff;
+        }
+
+        .kanban-empty {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 12px;
+            padding: 25px 5px;
+        }
+
+        .kanban-empty i {
+            display: block;
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+        body.dark-theme .kanban-column {
+            background: #1e293b;
+        }
+
+        body.dark-theme .kanban-column-header h6 {
+            color: #f1f5f9;
+        }
+
+        body.dark-theme .kanban-count {
+            background: #334155;
+            color: #e2e8f0;
+        }
+
+        body.dark-theme .kanban-card {
+            background: #0f172a;
+            border-color: #334155;
+        }
+
+        body.dark-theme .kanban-card h6 {
+            color: #f1f5f9;
+        }
+
+        body.dark-theme .kanban-card p {
+            color: #94a3b8;
+        }
+
+        @media (max-width: 768px) {
+            .kanban-page {
+                padding: 20px 15px;
+            }
+
+            .kanban-board {
+                grid-template-columns: repeat(4, minmax(260px, 1fr));
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+
+        <aside class="sidebar" id="sidebar">
+
+            <div class="sidebar-brand">
+                <div class="brand-logo">
+                    <i class="bi bi-kanban-fill"></i>
+                </div>
+                <span>TaskFlow</span>
+            </div>
+
+            <div class="sidebar-section">
+                <p class="sidebar-label">WORKSPACE</p>
+
+                <a href="index.html" class="sidebar-link">
+                    <i class="bi bi-grid"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="projects.html" class="sidebar-link">
+                    <i class="bi bi-folder2"></i>
+                    <span>My Projects</span>
+                </a>
+
+                <a href="tasks.html" class="sidebar-link">
+                    <i class="bi bi-check2-square"></i>
+                    <span>My Tasks</span>
+                </a>
+
+                <a href="kanban.html" class="sidebar-link active">
+                    <i class="bi bi-kanban"></i>
+                    <span>Kanban Board</span>
+                </a>
+            </div>
+
+            <div class="sidebar-section">
+                <p class="sidebar-label">GENERAL</p>
+
+                <a href="notifications.html" class="sidebar-link">
+    <i class="bi bi-bell"></i>
+    <span>Notifications</span>
+    <span class="notification-count" id="notificationCount">0</span>
+</a>
+<a href="team-members.html" class="sidebar-link">
+    <i class="bi bi-people"></i>
+    <span>Team Members</span>
+</a>
+
+               <a href="settings.html" class="sidebar-link">
+    <i class="bi bi-gear"></i>
+    <span>Settings</span>
+</a>
+            </div>
+
+            <div class="sidebar-bottom">
+                <div class="sidebar-user">
+                    <div class="user-avatar" id="sidebarAvatar">U</div>
+
+                    <div class="user-info">
+                        <h6 id="sidebarUserName">User Name</h6>
+                        <p>Workspace Member</p>
+                    </div>
+
+                    <button id="logoutButton" class="logout-btn" title="Logout">
+                        <i class="bi bi-box-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+        </aside>
+
+        <main class="main-content">
+
+            <header class="topbar">
+
+                <div class="topbar-left">
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="bi bi-list"></i>
+                    </button>
+
+                    <div>
+                        <h5>Kanban Board</h5>
+                        <p>Organize and track your tasks</p>
+                    </div>
+                </div>
+
+                <div class="topbar-right">
+                    <button class="icon-btn" id="themeToggle" title="Toggle Theme">
+                        <i class="bi bi-moon"></i>
+                    </button>
+
+                    <div class="topbar-avatar" id="topbarAvatar">U</div>
+                </div>
+
+            </header>
+
+            <section class="kanban-page">
+
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+
+                    <div>
+                        <h2 class="page-title">Board Overview</h2>
+                        <p class="text-secondary mb-0">
+                            Drag and drop tasks to update their status.
+                        </p>
+                    </div>
+
+                    <div style="min-width: 220px;">
+                        <select id="projectFilter" class="form-select">
+                            <option value="all">All Projects</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="kanban-board">
+
+                    <div class="kanban-column">
+
+                        <div class="kanban-column-header">
+                            <h6>
+                                <i class="bi bi-circle me-2 text-secondary"></i>
+                                To Do
+                            </h6>
+                            <span class="kanban-count" id="todoCount">0</span>
+                        </div>
+
+                        <div class="kanban-tasks" id="todoTasks" data-status="todo">
+                            <div class="kanban-empty">
+                                <i class="bi bi-clipboard"></i>
+                                Loading tasks...
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="kanban-column">
+
+                        <div class="kanban-column-header">
+                            <h6>
+                                <i class="bi bi-arrow-repeat me-2 text-primary"></i>
+                                In Progress
+                            </h6>
+                            <span class="kanban-count" id="inProgressCount">0</span>
+                        </div>
+
+                        <div class="kanban-tasks" id="inProgressTasks" data-status="in-progress">
+                            <div class="kanban-empty">
+                                <i class="bi bi-clipboard"></i>
+                                Loading tasks...
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="kanban-column">
+
+                        <div class="kanban-column-header">
+                            <h6>
+                                <i class="bi bi-eye me-2 text-warning"></i>
+                                In Review
+                            </h6>
+                            <span class="kanban-count" id="inReviewCount">0</span>
+                        </div>
+
+                        <div class="kanban-tasks" id="inReviewTasks" data-status="in-review">
+                            <div class="kanban-empty">
+                                <i class="bi bi-clipboard"></i>
+                                Loading tasks...
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="kanban-column">
+
+                        <div class="kanban-column-header">
+                            <h6>
+                                <i class="bi bi-check-circle me-2 text-success"></i>
+                                Completed
+                            </h6>
+                            <span class="kanban-count" id="completedCount">0</span>
+                        </div>
+
+                        <div class="kanban-tasks" id="completedTasks" data-status="completed">
+                            <div class="kanban-empty">
+                                <i class="bi bi-clipboard"></i>
+                                Loading tasks...
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/kanban.js"></script>
+
+</body>
+</html>

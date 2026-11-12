@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow Socket Test</title>
+</head>
+<body>
+    <h2>TaskFlow Socket.IO Real-time Test</h2>
+
+    <p id="status">Connecting...</p>
+    <p id="roomStatus"></p>
+
+    <h3>Real-time Notifications</h3>
+
+    <div id="notifications">
+        <p id="emptyMessage">No notifications received yet.</p>
+    </div>
+
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+
+    <script>
+        const socket = io("http://localhost:5001");
+
+        const status = document.getElementById("status");
+        const roomStatus = document.getElementById("roomStatus");
+        const notifications = document.getElementById("notifications");
+
+        const testUserId = "6af1c4f8c26e6e7d827d5956";
+
+        socket.on("connect", () => {
+            status.textContent = "Connected Successfully!";
+
+            socket.emit("join", testUserId);
+
+            roomStatus.textContent = "Joined Second Test User Room";
+
+            console.log("Socket connected:", socket.id);
+            console.log("Joined room for user:", testUserId);
+        });
+
+        socket.on("newNotification", (notification) => {
+            console.log("Received newNotification:", notification);
+
+            const emptyMessage = document.getElementById("emptyMessage");
+
+            if (emptyMessage) {
+                emptyMessage.remove();
+            }
+
+            const notificationItem = document.createElement("div");
+
+            const message = document.createElement("p");
+            message.textContent = notification.message;
+
+            const type = document.createElement("p");
+            type.textContent = "Type: " + notification.type;
+
+            const time = document.createElement("p");
+            time.textContent = "Received: " + new Date(
+                notification.createdAt
+            ).toLocaleString();
+
+            notificationItem.appendChild(message);
+            notificationItem.appendChild(type);
+            notificationItem.appendChild(time);
+
+            notificationItem.style.border = "1px solid #ccc";
+            notificationItem.style.padding = "12px";
+            notificationItem.style.marginBottom = "10px";
+
+            notifications.prepend(notificationItem);
+        });
+
+        socket.on("connect_error", (error) => {
+            status.textContent = "Connection Failed!";
+            console.error("Socket connection error:", error.message);
+        });
+
+        socket.on("disconnect", () => {
+            status.textContent = "Disconnected!";
+            roomStatus.textContent = "";
+
+            console.log("Socket disconnected");
+        });
+    </script>
+</body>
+</html>
